@@ -1,4 +1,4 @@
-# Example application written in Scala.js
+# Maven Viewer
 Maven Viewer is a Scala-JS application that generates a table for all the builds on a Maven repository for download.
 
 Maven Viewer can run on WordPress.

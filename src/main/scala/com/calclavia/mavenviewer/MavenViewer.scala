@@ -3,19 +3,18 @@ package com.calclavia.mavenviewer
 import org.scalajs.dom
 
 import scala.scalajs.js
+import scalajs.js.annotation.JSExport
+//import scalatags.JsDom.all._
 
 /**
  * @author Calclavia
  */
 object MavenViewer extends js.JSApp {
+
 	def main() {
 		val paragraph = dom.document.createElement("p")
-		paragraph.innerHTML = "<strong>It works!</strong>"
-		dom.document.getElementById("playground").appendChild(paragraph)
+		val repository = new MavenRepository("http://calclavia.com/maven", "../../", "dev.calclavia.electrodynamics", "electrodynamics")
+		paragraph.innerHTML = repository.renderBuilds()
+		val id = dom.document.getElementById("maven-viewer").appendChild(paragraph)
 	}
-
-	/** Computes the square of an integer.
-	  * This demonstrates unit testing.
-	  */
-	def square(x: Int): Int = x * x
 }
