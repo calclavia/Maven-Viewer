@@ -13,7 +13,7 @@ object MavenViewer extends js.JSApp {
 
 	def main() {
 		val paragraph = dom.document.createElement("p")
-		val repository = new MavenRepository("http://calclavia.com/maven", "../../", "dev.calclavia.electrodynamics", "electrodynamics")
+		val repository = new MavenRepository("http://calclavia.com/maven", "http://calclavia.com/maven", "dev.calclavia.electrodynamics", "electrodynamics")
 		paragraph.innerHTML = repository.renderBuilds()
 		val id = dom.document.getElementById("maven-viewer").appendChild(paragraph)
 	}
