@@ -4,7 +4,8 @@ Maven Viewer is a Scala-JS application that generates a table for all the builds
 Maven Viewer can run on WordPress.
 
 Requires:
-[Scala.js](https://www.scala-js.org/).
+[Scala.js](https://www.scala-js.org/)
+Using Yahoo API
 
 ## Get started
 

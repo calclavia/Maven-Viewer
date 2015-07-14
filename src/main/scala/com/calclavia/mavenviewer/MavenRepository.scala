@@ -1,10 +1,10 @@
 package com.calclavia.mavenviewer
 
-import org.scalajs.dom.ext.Ajax
+import org.scalajs.jquery.jQuery
 
-import scala.scalajs.concurrent.JSExecutionContext.Implicits.runNow
+import scala.scalajs.js
+import scala.scalajs.js._
 import scala.scalajs.js.annotation.JSExport
-import scalatags.JsDom.all._
 
 /**
  * A Maven Repository definition
@@ -15,7 +15,7 @@ import scalatags.JsDom.all._
  * @author Calclavia
  */
 @JSExport
-class MavenRepository(val publicRoot: String, var privateRoot : String , val group: String, val name: String) {
+class MavenRepository(val publicRoot: String, var privateRoot: String, val group: String, val name: String) {
 	repo =>
 
 	val accessDir = privateRoot + "/" + group.replaceAll("\\.", "/") + "/" + name + "/"
@@ -39,10 +39,12 @@ class MavenRepository(val publicRoot: String, var privateRoot : String , val gro
 	def generate() {
 		val mavenXMLUrl = accessDir + "maven-metadata.xml"
 
-		Ajax.get(mavenXMLUrl).onSuccess {
-			case xhr =>
-				println(xhr.responseText)
-		}
+		val request = eval("encodeURIComponent(\"select * from xml where url='" + mavenXMLUrl + "'\")")
+		val yql = "http://query.yahooapis.com/v1/public/yql?q=" + request + "&format=xml&callback=?"
+		jQuery.getJSON(yql, null, (data: Dynamic) => {
+			val result = data.results
+			println(result)
+		})
 	}
 
 	class Version(dir: String, url: String) {
