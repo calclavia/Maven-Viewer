@@ -3,20 +3,31 @@ package com.calclavia.mavenviewer
 import org.scalajs.dom
 import org.scalajs.jquery.jQuery
 
+import scala.collection.mutable
+import scala.scalajs.js
 import scala.scalajs.js._
 import scala.scalajs.js.annotation.JSExport
 import scalatags.JsDom.all._
+
+object MavenRepository extends js.JSApp {
+	override def main() {
+
+	}
+}
 
 /**
  * A Maven Repository definition
  * @param publicRoot - The root URL of the Maven repository used for download URLs. E.g: http://example.com/maven
  * @author Calclavia
  */
-@JSExport
+@JSExport("MavenRepository")
 class MavenRepository(val publicRoot: String) {
 	repo =>
 
 	var propertyInterpreter = Map.empty[String, String]
+
+	@JSExport
+	def newProject(group: String, name: String, extension: String = "jar") = new Project(group, name, extension)
 
 	/**
 	 * @param group - The group of the Maven config package format. E.g: com.example.project
@@ -34,14 +45,21 @@ class MavenRepository(val publicRoot: String) {
 		/**
 		 * Classifiers we're interested in searching.
 		 */
-		var classifiers = Set.empty[String]
+		var classifiers = scala.Array.empty[String]
 
+		@JSExport
 		var pagination = 10
+
+		@JSExport
+		def setClassifiers(arr: js.Array[String]){
+			classifiers = arr.toArray
+		}
 
 		/**
 		 * Generates the data for this project.
 		 */
-		def generate(callback: () => {}) {
+		@JSExport
+		def generate(callback: js.Function) {
 			val mavenXMLUrl = dir + "maven-metadata.xml"
 
 			val request = eval("encodeURIComponent(\"select * from xml where url='" + mavenXMLUrl + "'\")")
@@ -51,7 +69,6 @@ class MavenRepository(val publicRoot: String) {
 				val xmlResult = resultArr(0).asInstanceOf[String]
 				val xml = jQuery(jQuery.parseXML(xmlResult))
 
-				println(xmlResult)
 				xml.find("versions")
 					.children()
 					.each({
@@ -61,22 +78,27 @@ class MavenRepository(val publicRoot: String) {
 					}
 				})
 
-				callback()
+				callback.call(callback)
 			})
 		}
 
+		@JSExport
 		def html = table(
-			th(
-				td("Version"),
-				td("Artifacts")
+			tr(
+				th("Version"),
+				th("Artifacts")
 			),
 			for (v <- versions)
 				yield v.html
 		)
 
+		@JSExport
+		def render = html.render
+
 		class Version(val number: String) {
 			//Artifacts
-			var artifacts = Seq.empty
+			@JSExport
+			var artifacts: Seq[String] = proj.classifiers.map(proj.name + "-" + number + "-" + _).toSeq
 			//Dependencies
 			var dependencies = Seq.empty
 			//Changelog
@@ -84,8 +106,9 @@ class MavenRepository(val publicRoot: String) {
 
 			val dir = proj.dir + number + "/"
 
-			var artifactNames: Seq[String] = proj.classifiers.map(proj.name + "-" + number + "-" + _).toSeq
+			println(proj.classifiers.size)
 
+			@JSExport
 			def html =
 				tr(
 					td(
@@ -94,7 +117,7 @@ class MavenRepository(val publicRoot: String) {
 					td(
 						ul(
 							for {
-								artifactName <- artifactNames
+								artifactName <- artifacts
 								artifactFile = artifactName + "." + proj.extension
 								artifactPath = dir + artifactFile
 							}
