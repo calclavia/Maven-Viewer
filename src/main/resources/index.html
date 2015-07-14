@@ -11,7 +11,20 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
 <script type="text/javascript" src="./target/scala-2.11/example-opt.js"></script>
-<script type="text/javascript" src="../../../target/scala-2.11/example-launcher.js"></script>
+
+<script>
+    /**
+     * Sample script to generate a Maven Viewer
+     */
+    var repository = new MavenRepository("http://calclavia.com/maven");
+    var project = repository.newProject("dev.calclavia.electrodynamics", "electrodynamics");
+    project.setClassifiers(["core"]);
+    project.generate(function () {
+        $("#maven-table").append($(project.render));
+    });
+</script>
+
+<div id="maven-table"></div>
 
 </body>
 </html>
