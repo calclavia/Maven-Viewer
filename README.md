@@ -5,7 +5,7 @@ Maven Viewer can run on WordPress.
 
 Requires:
 [Scala.js](https://www.scala-js.org/)
-Using Yahoo API
+Using Yahoo YQL API
 
 ## Get started
 
