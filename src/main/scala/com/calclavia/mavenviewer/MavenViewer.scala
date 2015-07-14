@@ -3,8 +3,6 @@ package com.calclavia.mavenviewer
 import org.scalajs.dom
 
 import scala.scalajs.js
-import scalajs.js.annotation.JSExport
-//import scalatags.JsDom.all._
 
 /**
  * @author Calclavia
@@ -12,9 +10,9 @@ import scalajs.js.annotation.JSExport
 object MavenViewer extends js.JSApp {
 
 	def main() {
-		val paragraph = dom.document.createElement("p")
-		val repository = new MavenRepository("http://calclavia.com/maven", "http://calclavia.com/maven", "dev.calclavia.electrodynamics", "electrodynamics")
-		paragraph.innerHTML = repository.renderBuilds()
-		val id = dom.document.getElementById("maven-viewer").appendChild(paragraph)
+		val repository = new MavenRepository("http://calclavia.com/maven")
+		val project = new repository.Project("dev.calclavia.electrodynamics", "electrodynamics")
+		project.classifiers = Set[String]("core")
+		project.generate(() => dom.document.getElementById("maven-viewer").appendChild(project.html.render))
 	}
 }
