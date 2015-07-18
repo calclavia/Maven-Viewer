@@ -11,7 +11,7 @@ Requires:
 ## Use
 ```html
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
-<script type="text/javascript" src="https://raw.githubusercontent.com/calclavia/Maven-Viewer/master/bin/maven-viewer-opt.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/calclavia/Maven-Viewer/master/bin/maven-viewer-opt.js"></script>
 <script>
     /**
      * Sample script to generate a Maven Viewer
