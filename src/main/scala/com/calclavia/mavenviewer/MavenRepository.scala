@@ -98,7 +98,13 @@ class MavenRepository(val publicRoot: String) {
 		class Version(val number: String) {
 			//Artifacts
 			@JSExport
-			var artifacts: Seq[String] = proj.classifiers.map(proj.name + "-" + number + "-" + _).toSeq
+			var artifacts: Seq[String] = proj.classifiers.map(cl => {
+				if(cl.isEmpty())
+					proj.name + "-" + number
+				else
+					proj.name + "-" + number + "-" + cl
+			}).toSeq
+
 			//Dependencies
 			var dependencies = Seq.empty
 			//Changelog
