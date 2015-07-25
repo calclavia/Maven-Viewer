@@ -50,6 +50,12 @@ class MavenRepository(val publicRoot: String) {
 		@JSExport
 		var pagination = 10
 
+
+		@JSExport
+		def reverse() {
+			versions = versions.reverse
+		}
+
 		@JSExport
 		def setClassifiers(arr: js.Array[String]){
 			classifiers = arr.toArray
@@ -86,7 +92,7 @@ class MavenRepository(val publicRoot: String) {
 		def html = table(
 			tr(
 				th("Version"),
-				th("Artifacts")
+				th("Files")
 			),
 			for (v <- versions)
 				yield v.html
@@ -111,8 +117,6 @@ class MavenRepository(val publicRoot: String) {
 			var changes = Seq.empty
 
 			val dir = proj.dir + number + "/"
-
-			println(proj.classifiers.size)
 
 			@JSExport
 			def html =
